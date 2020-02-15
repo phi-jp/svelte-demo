@@ -3,7 +3,7 @@ div.app
     h1.text-red.fs64.font-weight-100.mb16 {title} ({len})
 
     form.mb32(on:submit|preventDefault={addTask})
-      input.mr8(name='label', type='text', bind:value={label})
+      input.mr8(name='label', type='text', bind:this={input}, bind:value={label})
       button Add
     div.tasks.mb32
       {#each tasks as task}
@@ -46,7 +46,8 @@ script.
     tasks = [...tasks, task];
     label = '';
 
-    e.target.elements.label.focus();
+    //- e.target.elements.label.focus();
+    input.focus();
 
     console.log(tasks);
   };
