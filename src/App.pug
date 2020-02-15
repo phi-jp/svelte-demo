@@ -1,62 +1,63 @@
 div.app
-	div.mxa.w600.p32
-		h1.text-red.fs64.font-weight-100.mb16 {title} ({len})
+  div.mxa.w600.p32
+    h1.text-red.fs64.font-weight-100.mb16 {title} ({len})
 
-		form.mb32(on:submit|preventDefault={addTask})
-			input.mr8(name='label', type='text', bind:value={label})
-			button Add
-		div.tasks.mb32
-			{#each tasks as task}
-				Task(item='{task}')
-		{#if canArchive}
-			div
-				button(on:click='{archive}') Archive
+    form.mb32(on:submit|preventDefault={addTask})
+      input.mr8(name='label', type='text', bind:value={label})
+      button Add
+    div.tasks.mb32
+      {#each tasks as task}
+        Task(item='{task}')
+    {#if canArchive}
+      div
+        button(on:click='{archive}') Archive
 
 style.
-	/*
-	@media (min-width: 640px) {
-		.hello {
-			max-width: none;
-		}
-	}
-	*/
+  /*
+  @media (min-width: 640px) {
+    .hello {
+      max-width: none;
+    }
+  }
+  */
 
 script.
-	import Task from './Task.pug';
+  import Task from './Task.pug';
 
-	let title = 'Todo';
-	let label = '';
-	let tasks = [
-		{ label: 'aaaaaaaaaa', checked: false },
-		{ label: 'bbbbbbbbbb', checked: false },
-		{ label: 'ccccccccccc', checked: false },
-		{ label: 'dddddddddd', checked: false },
-	];
+  let title = 'Todo';
+  let label = '';
+  let tasks = [
+    { label: 'aaaaaaaaaa', checked: false },
+    { label: 'bbbbbbbbbb', checked: false },
+    { label: 'ccccccccccc', checked: false },
+    { label: 'dddddddddd', checked: false },
+  ];
+  let input;
 
-	var addTask = (e) => {
-		if (!label) {
-			alert('empty!');
-			return ;
-		}
-		var task = {
-			label: label,
-			checked: false,
-		};
-		tasks = [...tasks, task];
-		label = '';
+  var addTask = (e) => {
+    if (!label) {
+      alert('empty!');
+      return ;
+    }
+    var task = {
+      label: label,
+      checked: false,
+    };
+    tasks = [...tasks, task];
+    label = '';
 
-		e.target.elements.label.focus();
+    e.target.elements.label.focus();
 
-		console.log(tasks);
-	};
+    console.log(tasks);
+  };
 
-	//- var canArchive = () => {
-	//- 	return tasks.some(item => item.checked);
-	//- };
+  //- var canArchive = () => {
+  //-   return tasks.some(item => item.checked);
+  //- };
 
-	var archive = () => {
-		tasks = tasks.filter(item => !item.checked);
-	};
+  var archive = () => {
+    tasks = tasks.filter(item => !item.checked);
+  };
 
-	$: len = tasks.length;
-	$: canArchive = tasks.some(item => item.checked);
+  $: len = tasks.length;
+  $: canArchive = tasks.some(item => item.checked);
