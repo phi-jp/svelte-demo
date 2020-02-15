@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import autoPreprocess from 'svelte-preprocess';
+import pug2svelte from 'pug2svelte'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -17,6 +17,7 @@ export default {
 	},
 	plugins: [
 		svelte({
+			extensions: ['.pug'],
 			// enable run-time checks when not in production
 			dev: !production,
 			// we'll extract any component CSS out into
@@ -24,7 +25,9 @@ export default {
 			css: css => {
 				css.write('public/build/bundle.css');
 			},
-			preprocess: autoPreprocess(),
+			preprocess: {
+				markup: ({ content }) => ({ code: pug2svelte(content, { pug: true }) })
+			},
 		}),
 
 		// If you have external dependencies installed from
