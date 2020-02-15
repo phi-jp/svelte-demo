@@ -1,0 +1,13 @@
+
+div.task
+  label.f.fm
+    input.block.pt4.mr4(type='checkbox', bind:checked='{item.checked}', on:change='{change}')
+    div.p4 {item.label}
+
+script.
+  import { onMount, afterUpdate, tick } from 'svelte';
+  export let item;
+
+  var change = (e) => {
+    app.$$.update();
+  };

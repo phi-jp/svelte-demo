@@ -1,27 +1,62 @@
-div.main
-	h1 Hello {name}!
-	p Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.
+div.app
+	div.mxa.w600.p32
+		h1.text-red.fs64.font-weight-100.mb16 {title} ({len})
 
-	style.
-		.main {
-			text-align: center;
-			padding: 1em;
-			max-width: 240px;
-			margin: 0 auto;
+		form.mb32(on:submit|preventDefault={addTask})
+			input.mr8(name='label', type='text', bind:value={label})
+			button Add
+		div.tasks.mb32
+			{#each tasks as task}
+				Task(item='{task}')
+		{#if canArchive}
+			div
+				button(on:click='{archive}') Archive
+
+style.
+	/*
+	@media (min-width: 640px) {
+		.hello {
+			max-width: none;
 		}
+	}
+	*/
 
-		h1 {
-			color: #ff3e00;
-			text-transform: uppercase;
-			font-size: 4em;
-			font-weight: 100;
+script.
+	import Task from './Task.pug';
+
+	let title = 'Todo';
+	let label = '';
+	let tasks = [
+		{ label: 'aaaaaaaaaa', checked: false },
+		{ label: 'bbbbbbbbbb', checked: false },
+		{ label: 'ccccccccccc', checked: false },
+		{ label: 'dddddddddd', checked: false },
+	];
+
+	var addTask = (e) => {
+		if (!label) {
+			alert('empty!');
+			return ;
 		}
+		var task = {
+			label: label,
+			checked: false,
+		};
+		tasks = [...tasks, task];
+		label = '';
 
-		@media (min-width: 640px) {
-			main {
-				max-width: none;
-			}
-		}
+		e.target.elements.label.focus();
 
-	script.
-		let name = 'World'
+		console.log(tasks);
+	};
+
+	//- var canArchive = () => {
+	//- 	return tasks.some(item => item.checked);
+	//- };
+
+	var archive = () => {
+		tasks = tasks.filter(item => !item.checked);
+	};
+
+	$: len = tasks.length;
+	$: canArchive = tasks.some(item => item.checked);
